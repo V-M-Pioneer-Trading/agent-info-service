@@ -4,13 +4,23 @@ import (
 	"fmt"
 	"net/http"
 
-	"rsc.io/quote"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, you've requested: %s\n"+"Anyway, %s\n", r.URL.Path, quote.Go())
+	r := mux.NewRouter()
+
+	r.HandleFunc("/current-agent", func(w http.ResponseWriter, r *http.Request) {
+
+		fmt.Fprintf(w, "You've requested information about the current agent")
 	})
 
-	http.ListenAndServe(":80", nil)
+	r.HandleFunc("/info/{agentId}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		agentId := vars["agentId"]
+
+		fmt.Fprintf(w, "You've requested information about the agent with id: %s", agentId)
+	})
+
+	http.ListenAndServe(":80", r)
 }
