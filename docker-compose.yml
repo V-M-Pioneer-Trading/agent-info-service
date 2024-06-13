@@ -15,6 +15,6 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASS: 'pass'
     volumes:
-      - datavolume:/var/lib/mysql
+      - mysql_datavolume:/var/lib/mysql
 volumes:
-  datavolume:
+  mysql_datavolume:
