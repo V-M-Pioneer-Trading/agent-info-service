@@ -8,14 +8,17 @@ Service for accessing information about the agent - profile, fleet, contracts, e
 * Golang (https://go.dev/doc/install)
 * Latest MySql Docker Image (https://hub.docker.com/_/mysql)
 
-### Setting up Environment
+### Running application locally
 
 **TODO** add more detailed instructions for a fresh project setup
 
-#### Database
+To run DB execute the following command in the root directory:
+> docker compose up
 
-To run DB execute the following command:
-docker run --name vnm-agent-db -e MYSQL_ROOT_PASSWORD=*your-password* -d mysql:tag
+To run application, switch to "/src" directory and execute:
+> go run .
+
+You can test the applcation by navigating to http://localhost/current-agent
 
 ## References
 
