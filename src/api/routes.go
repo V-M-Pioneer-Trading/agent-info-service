@@ -18,6 +18,8 @@ func SetUpRouter() *mux.Router {
 
 		log.Default().Printf("%s request: to %s", r.Method, r.RequestURI)
 		spacetraders.GetMyAgent()
+		spacetraders.GetMyShips()
+		spacetraders.GetMyContracts()
 		fmt.Fprintf(w, "You've requested information about the current agent. See server console output for details")
 	})
 
