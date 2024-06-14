@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	"vnm/agent-info-service/spacetraders"
 )
 
 func SetUpRouter() *mux.Router {
@@ -15,7 +17,8 @@ func SetUpRouter() *mux.Router {
 	r.HandleFunc("/current-agent", func(w http.ResponseWriter, r *http.Request) {
 
 		log.Default().Printf("%s request: to %s", r.Method, r.RequestURI)
-		fmt.Fprintf(w, "You've requested information about the current agent")
+		spacetraders.GetMyAgent()
+		fmt.Fprintf(w, "You've requested information about the current agent. See server console output for details")
 	})
 
 	r.HandleFunc("/agent/{agentId}", func(w http.ResponseWriter, r *http.Request) {
