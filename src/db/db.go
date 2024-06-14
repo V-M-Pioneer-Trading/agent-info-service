@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func GetDatabase() *sql.DB {
+func SetUpDatabase() *sql.DB {
 
 	log.Default().Printf("Establishing connection to MySql DB...")
 
