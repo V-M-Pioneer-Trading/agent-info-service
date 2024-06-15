@@ -150,8 +150,8 @@ type RouteWaypoint struct {
 	Symbol       string `json:"symbol"`
 	Type         string `json:"type"`
 	SystemSymbol string `json:"systemSymbol"`
-	x            string `json:"x"`
-	y            string `json:"y"`
+	X            int    `json:"x"`
+	Y            int    `json:"y"`
 }
 
 // Nav represents the navigation information for a ship
@@ -172,4 +172,15 @@ type Registration struct {
 	Name          string `json:"name"`
 	FactionSymbol string `json:"factionSymbol"`
 	Role          string `json:"role"`
+}
+
+type PaginationMeta struct {
+	Total int `json:"total"`
+	Page  int `json:"page"`
+	Limit int `json:"limit"`
+}
+
+type GetMyShipsResponse struct {
+	Data []Ship         `json:"data"`
+	Meta PaginationMeta `json:"meta"`
 }

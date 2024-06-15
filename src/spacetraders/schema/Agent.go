@@ -8,3 +8,7 @@ type Agent struct {
 	StartingFaction string `json:"startingFaction"`
 	ShipCount       int    `json:"shipCount"`
 }
+
+type GetMyAgentResponse struct {
+	Data Agent `json:"data"`
+}

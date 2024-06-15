@@ -37,3 +37,8 @@ type ContractTerms struct {
 	Payment  Payment        `json:"payment"`
 	Deliver  []DeliveryInfo `json:"deliver"`
 }
+
+type GetMyContractsResponse struct {
+	Data []Contract     `json:"data"`
+	Meta PaginationMeta `json:"meta"`
+}
