@@ -19,10 +19,10 @@ func SetUpDatabase() *sql.DB {
 	}
 	log.Default().Printf("Connection to DB is established.")
 
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-	log.Default().Printf("Database is ready.")
+	//if err := db.Ping(); err != nil {
+	//	log.Fatal(err)
+	//}
+	//log.Default().Printf("Database is ready.")
 
 	return db
 }
