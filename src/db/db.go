@@ -12,7 +12,7 @@ func SetUpDatabase() *sql.DB {
 	log.Default().Printf("Establishing connection to MySql DB...")
 
 	// Configure the database connection (always check errors)
-	db, err := sql.Open("mysql", "root:example@(127.0.0.1:3306)/vnm-agent-db?parseTime=true")
+	db, err := sql.Open("mysql", "root:example@(mysql:3306)/vnm-agent-db?parseTime=true")
 
 	if err != nil {
 		log.Fatal(err)
