@@ -3,7 +3,6 @@ package spacetraders
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"reflect"
 	"vnm/agent-info-service/spacetraders/schema"
@@ -23,7 +22,7 @@ func GetMyAgent() schema.Agent {
 		panic(err)
 	}
 	agentResponse := data.(schema.GetMyAgentResponse)
-	fmt.Printf("Agent response:\n %+v\n", agentResponse)
+	//fmt.Printf("Agent response:\n %+v\n", agentResponse)
 	return agentResponse.Data
 }
 
@@ -34,7 +33,7 @@ func GetMyShips() []schema.Ship {
 		panic(err)
 	}
 	requestResult := data.(schema.GetMyShipsResponse)
-	fmt.Printf("Ships response: %v\n", requestResult)
+	//fmt.Printf("Ships response: %v\n", requestResult)
 	return requestResult.Data
 }
 
@@ -45,7 +44,7 @@ func GetMyContracts() []schema.Contract {
 		panic(err)
 	}
 	requestResult := data.(schema.GetMyContractsResponse)
-	fmt.Printf("Contracts response: %v\n", requestResult)
+	//fmt.Printf("Contracts response: %v\n", requestResult)
 	return requestResult.Data
 }
 
@@ -69,12 +68,25 @@ func makeAuthenticatedGetRequest(endpoint string, resultType interface{}) (inter
 		return nil, errors.New("failed to get a successful response from the server")
 	}
 
+	// Check if the response body has data
+	var hasData bool
+	decoder := json.NewDecoder(resp.Body)
+	decoder.UseNumber() // UseNumber to preserve JSON number type
+	if decoder.More() {
+		hasData = true
+	}
+
 	// Create a new instance of the resultType using reflection
 	resultValue := reflect.New(reflect.TypeOf(resultType)).Interface()
 
-	err = json.NewDecoder(resp.Body).Decode(resultValue)
+	err = decoder.Decode(resultValue)
 	if err != nil {
 		return nil, err
+	}
+
+	// Set Content-Type header if response body has data
+	if hasData {
+		req.Header.Set("Content-Type", "application/json")
 	}
 
 	// Return the dereferenced value

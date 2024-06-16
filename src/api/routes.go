@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,7 +9,14 @@ import (
 	"github.com/gorilla/mux"
 
 	"vnm/agent-info-service/spacetraders"
+	"vnm/agent-info-service/spacetraders/schema"
 )
+
+type CurrentAgentResponse struct {
+	Agent     schema.Agent      `json:"agent"`
+	Ships     []schema.Ship     `json:"ships"`
+	Contracts []schema.Contract `json:"contracts"`
+}
 
 func SetUpRouter() *mux.Router {
 
@@ -17,10 +25,29 @@ func SetUpRouter() *mux.Router {
 	r.HandleFunc("/current-agent", func(w http.ResponseWriter, r *http.Request) {
 
 		log.Default().Printf("%s request: to %s", r.Method, r.RequestURI)
-		spacetraders.GetMyAgent()
-		spacetraders.GetMyShips()
-		spacetraders.GetMyContracts()
-		fmt.Fprintf(w, "You've requested information about the current agent. See server console output for details")
+
+		// Create a CurrentAgentResponse instance
+		var response CurrentAgentResponse
+		response.Agent = spacetraders.GetMyAgent()
+		response.Ships = spacetraders.GetMyShips()
+		response.Contracts = spacetraders.GetMyContracts()
+
+		// Marshal the response into JSON
+		jsonResponse, err := json.Marshal(response)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response
+		_, err = w.Write(jsonResponse)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	})
 
 	r.HandleFunc("/agent/{agentId}", func(w http.ResponseWriter, r *http.Request) {
